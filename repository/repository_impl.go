@@ -8,7 +8,7 @@ import (
 	"restful-api2/models/response"
 )
 
-func (r *Repository) Insert(ctx context.Context, req request.InsertCustomers) (*response.InsertResponse, error) {
+func (r *customerClient) Insert(ctx context.Context, req request.InsertCustomers) (*response.InsertResponse, error) {
 	queryInsert := `INSERT INTO restful_api.customers (customerId, phoneNumber, status) VALUES (?,?,?)`
 	query, err := r.DB.PrepareContext(ctx, queryInsert)
 	helper.PrintError(err)
@@ -34,7 +34,7 @@ func (r *Repository) Insert(ctx context.Context, req request.InsertCustomers) (*
 
 }
 
-func (r *Repository) Update(ctx context.Context, req request.UpdateCustomers) (*response.UpdateResponse, error) {
+func (r *customerClient) Update(ctx context.Context, req request.UpdateCustomers) (*response.UpdateResponse, error) {
 	queryUpdate := `UPDATE restful_api.customers 
 					SET phoneNumber = ?, status=?
 					WHERE customerId=?;`
@@ -62,7 +62,7 @@ func (r *Repository) Update(ctx context.Context, req request.UpdateCustomers) (*
 	return res, nil
 }
 
-func (r *Repository) Delete(ctx context.Context, customerId int) error {
+func (r *customerClient) Delete(ctx context.Context, customerId string) error {
 	queryDelete := `DELETE FROM restful_api.customers WHERE customerId= ?;`
 	_, err := r.DB.ExecContext(ctx, queryDelete, customerId)
 	helper.PrintError(err)
@@ -70,7 +70,7 @@ func (r *Repository) Delete(ctx context.Context, customerId int) error {
 	return nil
 }
 
-func (r *Repository) FindById(ctx context.Context, customerId int) (*response.GetByIDResponse, error) {
+func (r *customerClient) FindById(ctx context.Context, customerId string) (*response.GetByIDResponse, error) {
 	queryFindId := `SELECT c.customerId, c.phoneNumber, cs.description 
 					FROM restful_api.customers c 
 					INNER JOIN restful_api.customers_status cs 
@@ -83,7 +83,7 @@ func (r *Repository) FindById(ctx context.Context, customerId int) (*response.Ge
 	return res, nil
 }
 
-func (r *Repository) FindAll(ctx context.Context) ([]response.GetAllResponse, error) {
+func (r *customerClient) FindAll(ctx context.Context) ([]response.GetAllResponse, error) {
 	queryFindAll := `SELECT c.customerId, c.phoneNumber, cs.description 
 					FROM restful_api.customers c 
 					INNER JOIN restful_api.customers_status cs 
