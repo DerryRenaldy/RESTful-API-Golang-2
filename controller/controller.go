@@ -6,17 +6,17 @@ import (
 )
 
 type Controller struct {
-	Services service.ServiceInter
+	Services service.Repository
 }
 
-func NewController(services service.ServiceInter) *Controller {
-	return &Controller{Services: services}
-}
-
-type ControllerInter interface {
+type Repository interface {
 	Create(w http.ResponseWriter, r *http.Request)
 	Update(w http.ResponseWriter, r *http.Request)
 	Delete(w http.ResponseWriter, r *http.Request)
 	FindById(w http.ResponseWriter, r *http.Request)
 	FindAll(w http.ResponseWriter, r *http.Request)
+}
+
+func NewController(services service.Repository) *Controller {
+	return &Controller{Services: services}
 }

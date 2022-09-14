@@ -20,5 +20,7 @@ type Repository interface {
 }
 
 func NewService(repository repository.Repository) *Service {
-	return &Service{Repository: repository}
+	return &Service{
+		Repository: repository,
+	}
 }

@@ -8,10 +8,13 @@ import (
 )
 
 func (s *Service) Create(ctx context.Context, req request.InsertCustomers) (*response.InsertResponse, error) {
-	resp, err := s.Repository.Insert(ctx, req)
+	status, err := s.Repository.Insert(ctx, req)
 	helper.PrintError(err)
 
-	return resp, nil
+	status.CustomerID = req.CustomerID
+	status.PhoneNumber = req.PhoneNumber
+
+	return status, nil
 }
 
 func (s *Service) Update(ctx context.Context, req request.UpdateCustomers) (*response.UpdateResponse, error) {
@@ -19,14 +22,16 @@ func (s *Service) Update(ctx context.Context, req request.UpdateCustomers) (*res
 	panic("implement me")
 }
 
-func (s *Service) Delete(ctx context.Context, customerId int) {
+func (s *Service) Delete(ctx context.Context, customerId string) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s *Service) FindByIn(ctx context.Context, customerId int) *response.GetByIDResponse {
-	//TODO implement me
-	panic("implement me")
+func (s *Service) FindById(ctx context.Context, customerId string) *response.GetByIDResponse {
+	response, err := s.Repository.FindById(ctx, customerId)
+	helper.PrintError(err)
+
+	return response
 }
 
 func (s *Service) FindAll(ctx context.Context) []response.GetAllResponse {
