@@ -11,3 +11,9 @@ type UpdateCustomers struct {
 	PhoneNumber string `json:"phone_number"`
 	Status      int    `json:"status"`
 }
+
+type GetById struct {
+	CustomerID  string `json:"customer_id"`
+	PhoneNumber string `json:"phone_number"`
+	Status      int    `json:"status"`
+}

@@ -20,18 +20,12 @@ func (r *customerClient) Insert(ctx context.Context, req request.InsertCustomers
 	_, err = query.ExecContext(ctx, req.CustomerID, req.PhoneNumber, req.Status)
 	helper.PrintError(err)
 
-	querySearch := `SELECT c.customerId, c.phoneNumber, cs.description 
-					FROM restful_api.customers c 
-					INNER JOIN restful_api.customers_status cs 
-					ON c.status=cs.status WHERE c.customerId =?;`
-
 	res := &response.InsertResponse{}
-
-	err = r.DB.QueryRowContext(ctx, querySearch, req.CustomerID).Scan(&res.CustomerID, &res.PhoneNumber, &res.Status)
+	queryGetStatus := `SELECT description FROM restful_api.customers_status where status=?`
+	err = r.DB.QueryRowContext(ctx, queryGetStatus, req.Status).Scan(&res.Status)
 	helper.PrintError(err)
 
 	return res, nil
-
 }
 
 func (r *customerClient) Update(ctx context.Context, req request.UpdateCustomers) (*response.UpdateResponse, error) {
@@ -49,17 +43,16 @@ func (r *customerClient) Update(ctx context.Context, req request.UpdateCustomers
 	_, err = query.ExecContext(ctx, req.PhoneNumber, req.Status, req.CustomerID)
 	helper.PrintError(err)
 
-	querySearch := `SELECT c.customerId, c.phoneNumber, cs.description 
-					FROM restful_api.customers c 
-					INNER JOIN restful_api.customers_status cs 
-					ON c.status=cs.status WHERE c.customerId =?;`
-
 	res := &response.UpdateResponse{}
-
-	err = r.DB.QueryRowContext(ctx, querySearch, req.CustomerID).Scan(&res.CustomerID, &res.PhoneNumber, &res.Status)
+	queryGetStatus := `SELECT c.customerId, c.phoneNumber, cs.description 
+						FROM restful_api.customers c 
+						INNER JOIN restful_api.customers_status cs 
+						ON c.status=cs.status WHERE c.customerId =?`
+	err = r.DB.QueryRowContext(ctx, queryGetStatus, req.CustomerID).Scan(&res.CustomerID, &res.PhoneNumber, &res.Status)
 	helper.PrintError(err)
 
 	return res, nil
+
 }
 
 func (r *customerClient) Delete(ctx context.Context, customerId string) error {
