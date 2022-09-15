@@ -14,7 +14,7 @@ type Service struct {
 type Repository interface {
 	Create(ctx context.Context, req request.InsertCustomers) (*response.InsertResponse, error)
 	Update(ctx context.Context, req request.UpdateCustomers) (*response.UpdateResponse, error)
-	Delete(ctx context.Context, customerId string)
+	Delete(ctx context.Context, customerId string) error
 	FindById(ctx context.Context, customerId string) *response.GetByIDResponse
 	FindAll(ctx context.Context) []response.GetAllResponse
 }

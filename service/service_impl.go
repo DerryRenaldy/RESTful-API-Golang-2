@@ -18,13 +18,17 @@ func (s *Service) Create(ctx context.Context, req request.InsertCustomers) (*res
 }
 
 func (s *Service) Update(ctx context.Context, req request.UpdateCustomers) (*response.UpdateResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	resp, err := s.Repository.Update(ctx, req)
+	helper.PrintError(err)
+
+	return resp, nil
 }
 
-func (s *Service) Delete(ctx context.Context, customerId string) {
-	//TODO implement me
-	panic("implement me")
+func (s *Service) Delete(ctx context.Context, customerId string) error {
+	err := s.Repository.Delete(ctx, customerId)
+	helper.PrintError(err)
+
+	return nil
 }
 
 func (s *Service) FindById(ctx context.Context, customerId string) *response.GetByIDResponse {
@@ -35,6 +39,8 @@ func (s *Service) FindById(ctx context.Context, customerId string) *response.Get
 }
 
 func (s *Service) FindAll(ctx context.Context) []response.GetAllResponse {
-	//TODO implement me
-	panic("implement me")
+	resp, err := s.Repository.FindAll(ctx)
+	helper.PrintError(err)
+
+	return resp
 }

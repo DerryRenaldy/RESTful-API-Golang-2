@@ -32,6 +32,9 @@ func (s *Server) Start() {
 
 	r.HandleFunc("/insertCustomer", s.controller.Create).Methods(http.MethodPost)
 	r.HandleFunc("/getByIdCustomer/{customerId}", s.controller.FindById).Methods(http.MethodGet)
+	r.HandleFunc("/getAll", s.controller.FindAll).Methods(http.MethodGet)
+	r.HandleFunc("/updateCustomer/{customerId}", s.controller.Update).Methods(http.MethodPut)
+	r.HandleFunc("/deleteCustomer/{customerId}", s.controller.Delete).Methods(http.MethodDelete)
 
 	err := http.ListenAndServe(":8010", r)
 	helper.PrintError(err)
